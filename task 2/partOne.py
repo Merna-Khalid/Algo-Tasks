@@ -2,6 +2,7 @@ import numpy as np
 import random
 from math import sqrt, sin
 
+# returns minimum, number of f-calculations, number of iterations
 def exhaustive(f, a, b, e=0.001):
 	n = int((b - a) / e)
 	mini = float('inf') 
@@ -11,8 +12,9 @@ def exhaustive(f, a, b, e=0.001):
 		if mini > f(x_m):
 			mini = f(x_m)
 			ind = i
-	return a + ind * (b - a) / n
+	return a + ind * (b - a) / n, n, n
 
+# returns a, b where minimum is between, number of f-cals, iterations
 def dichotomy(f, a, b, e=0.001):
 	l = random.uniform(0.0000001, e)
 	iters = 0
@@ -24,7 +26,7 @@ def dichotomy(f, a, b, e=0.001):
 		else:
 			a = x1
 		iters += 1
-	return a, b, iters
+	return a, b, iters * 2, iters
 	
 
 def golden_section(f, a, b, e=0.001):
@@ -43,7 +45,7 @@ def golden_section(f, a, b, e=0.001):
 			x2 = b + (sqrt(5) - 3) / 2.0 * (b - a)
 			a, x1 = x1, x2
 			iters += 1
-	return a, b, iters
+	return a, b, 2, iters
 
 
 
@@ -55,22 +57,72 @@ def secondF(x):
 
 def thirdF(x):
 	return x * sin(1/float(x))
-#print(exhaustive(cube, 0, 1, 0.001))
 
-"""
-a, b, iters = dichotomy(cube, 0, 1, 0.001)
-print(a, cube(a))
-print(b, cube(b))
-print(iters)
-"""
-"""
-a, b, iters = dichotomy(secondF, 0, 1, 0.001)
-print(a, secondF(a))
-print(b, secondF(b))
-print(iters)
 
-a, b, iters = golden_section(secondF, 0, 1, 0.001)
-print(a, secondF(a))
-print(b, secondF(b))
-print(iters)
-"""
+print("cube function:")
+print("\texhaustives search :")
+print("\t  minimum, f_cals, iters")
+print("\t",exhaustive(cube, 0, 1, 0.001))
+
+
+a, b, fcals, iters = dichotomy(cube, 0, 1, 0.001)
+print("\tdichotomy :")
+print("\t\ta/f(a): ",a, cube(a))
+print("\t\tb/f(b): ",b, cube(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
+
+
+a, b, fcals, iters = golden_section(cube, 0, 1, 0.001)
+print("\tgolden section :")
+print("\t\ta/f(a): ",a, cube(a))
+print("\t\tb/f(b): ",b, cube(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
+
+
+#---------------------------------------------------------------
+
+print("second function:")
+print("\texhaustives search :")
+print("\t  minimum, f_cals, iters")
+print("\t",exhaustive(secondF, 0, 1, 0.001))
+
+a, b, fcals, iters = dichotomy(cube, 0, 1, 0.001)
+print("\tdichotomy :")
+print("\t\ta/f(a): ",a, secondF(a))
+print("\t\tb/f(b): ",b, secondF(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
+
+
+a, b, fcals, iters = golden_section(secondF, 0, 1, 0.001)
+print("\tgolden section :")
+print("\t\ta/f(a): ",a, secondF(a))
+print("\t\tb/f(b): ",b, secondF(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
+
+
+#---------------------------------------------------------------
+
+print("third function:")
+print("\texhaustives search :")
+print("\t  minimum, f_cals, iters")
+print("\t",exhaustive(thirdF, 0.01, 1, 0.001))
+
+
+a, b, fcals, iters = dichotomy(thirdF, 0.01, 1, 0.001)
+print("\tdichotomy :")
+print("\t\ta/f(a): ",a, thirdF(a))
+print("\t\tb/f(b): ",b, thirdF(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
+
+
+a, b, fcals, iters = golden_section(thirdF, 0.01, 1, 0.001)
+print("\tgolden section :")
+print("\t\ta/f(a): ",a, thirdF(a))
+print("\t\tb/f(b): ",b, thirdF(b))
+print("\t\tfcals: ", fcals)
+print("\t\titers: ",iters)
